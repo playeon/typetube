@@ -787,7 +787,7 @@ export class TypeTubeClient {
       const cr = probeRes.headers.get("content-range");
       if (probeRes.status === 206 && cr) {
         const totalBytes = parseInt(cr.split("/")[1] || "0", 10);
-        if (totalBytes > 8 * 1024 * 1024) {
+        if (totalBytes > 0) {
           return await this.downloadChunkedRange(url, destPath, totalBytes, onProgress, chunkSizeBytes, workersCount);
         }
       }
@@ -872,7 +872,8 @@ export class TypeTubeClient {
         const transport = currentUrl.startsWith("https:") ? https : http;
         const req = transport.get(currentUrl, {
           headers: {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36"
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+            "Range": "bytes=0-"
           }
         }, (res) => {
           if (res.statusCode && res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {

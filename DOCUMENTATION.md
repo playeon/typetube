@@ -19,7 +19,58 @@ npm install typetube
 - Runtime: Node.js 18.0.0 or higher.
 - System dependencies: If you want to use `downloadMedia` to produce combined video and audio files, ensure `ffmpeg` is installed in your system PATH.
 
-## 3. Client Setup
+## 3. Command Line Interface (CLI)
+
+TypeTube includes a built-in CLI that can be run on-demand via `npx typetube` or installed globally:
+
+```bash
+npm install -g typetube
+```
+
+### CLI Commands
+
+```bash
+# Resolve a track or video URL with stream links and metadata
+typetube resolve "espresso sabrina carpenter"
+typetube resolve https://www.youtube.com/watch?v=dQw4w9WgXcQ --json
+
+# Search YouTube
+typetube search "daft punk" 5
+
+# Download audio using parallel chunk workers
+typetube download "chopin nocturne" ./music --workers 6
+
+# Download video stream up to 1080p
+typetube download "https://www.youtube.com/watch?v=dQw4w9WgXcQ" ./videos --video --quality 1080p
+
+# Check current rate limit and daily quota usage
+typetube usage
+```
+
+### CLI Flags
+
+| Flag | Description |
+| :--- | :--- |
+| `-o, --output <path>` | Destination file path or directory (default: current directory) |
+| `-x, --extract-audio` | Download audio stream only (default) |
+| `--video` | Download raw adaptive video stream instead of audio |
+| `--media` | Download and mux combined video and audio (requires ffmpeg) |
+| `-f, --format <q>` | Video resolution target (e.g. `1080p`, `720p`, `highest`) |
+| `--audio-quality <q>` | Audio stream preference (`highest`, `hifi`, `128kbps`, `256kbps`) |
+| `-N, --workers <count>` | Parallel download range workers (1 to 32, default 4) |
+| `--chunk-size <mb>` | Chunk size in MB for range streaming (default 10) |
+| `-g, --get-url` | Print direct CDN stream URL to stdout and exit |
+| `-e, --get-title` | Print track title to stdout and exit |
+| `--get-id` | Print YouTube video ID to stdout and exit |
+| `--get-thumbnail` | Print thumbnail image URL to stdout and exit |
+| `-j, --dump-json` | Output complete metadata as JSON |
+| `-s, --simulate` | Inspect track details without downloading |
+| `--key <apiKey>` | TypeTube API key (or set `TYPETUBE_API_KEY` env var) |
+| `--host <url>` | TypeTube host URL (default: `https://typetube.xysushi.in`) |
+| `-v, --version` | Print installed TypeTube version |
+| `-h, --help` | Show command usage |
+
+## 4. Client Setup
 
 ```typescript
 import { createClient, TypeTubeClient } from "typetube";
@@ -46,7 +97,7 @@ const customClient = new TypeTubeClient({
 | `timeoutMs` | `number` | `10000` | Network request timeout in milliseconds. |
 | `format` | `"protobuf"` \| `"json"` | `"protobuf"` | Wire format for resolving queries and searches. |
 
-## 4. API Reference
+## 5. API Reference
 
 ### `client.resolve(query, options?)`
 
@@ -230,13 +281,13 @@ Checks whether a stream URL signature is expired or about to expire.
 const expired = client.isStreamExpired(track.bestAudio.url, 30);
 ```
 
-## 5. Performance Tips
+## 6. Performance Tips
 
 - Workers: For standard audio downloads, 4 workers are usually enough to saturate typical connections. For large 1080p video files, setting `workers` to 6 or 8 improves throughput.
 - Chunk Size: The default 10MB chunk size works well for most connections. On slower networks or low-memory environments, you can reduce this to 2MB or 4MB.
 - Reuse Track Results: Avoid re-resolving URLs when calling download or playback methods. Pass the `TrackResult` object directly to save round-trips and quota.
 
-## 6. Error Handling
+## 7. Error Handling
 
 All client methods throw `TypeTubeError`:
 
@@ -259,6 +310,6 @@ Common status codes:
 - `408`: Request timed out.
 - `429`: Quota exceeded (either per-minute or daily limit reached).
 
-## 7. License
+## 8. License
 
 MIT

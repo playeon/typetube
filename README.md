@@ -20,7 +20,48 @@ npm install typetube
 
 Requires Node.js 18 or higher. If you plan to mux video and audio into a single MP4 file, make sure `ffmpeg` is installed on your system.
 
-## Quick Start
+## CLI Usage (yt-dlp Style)
+
+TypeTube can be run directly from your terminal like `yt-dlp`:
+
+```bash
+npm install -g typetube
+```
+
+Or run on-demand via `npx typetube`.
+
+Examples:
+```bash
+# Download audio directly (default)
+typetube "espresso sabrina carpenter" -o ./music
+
+# Download with 8 parallel connections
+typetube https://www.youtube.com/watch?v=dQw4w9WgXcQ -N 8 -o ./downloads
+
+# Download 1080p video stream
+typetube https://www.youtube.com/watch?v=dQw4w9WgXcQ --video -f 1080p
+
+# Print direct stream URL (for piping into mpv, vlc, ffmpeg)
+typetube -g "chopin nocturne"
+
+# Print video title or ID
+typetube -e "daft punk get lucky"
+typetube --get-id "starboy the weeknd"
+
+# Dump metadata as JSON
+typetube -j https://www.youtube.com/watch?v=dQw4w9WgXcQ
+
+# Inspect track streams without downloading
+typetube -s "reona nainai"
+
+# Search YouTube
+typetube search "daft punk" 5
+
+# Check quota status
+typetube usage
+```
+
+## Quick Start (SDK)
 
 ```typescript
 import { createClient } from "typetube";
