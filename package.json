@@ -1,0 +1,52 @@
+{
+  "name": "typetube",
+  "version": "1.0.0",
+  "description": "High-performance unthrottled YouTube media stream extraction and download client with Protocol Buffers support",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "DOCUMENTATION.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Playeon/typetube.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Playeon/typetube/issues"
+  },
+  "homepage": "https://github.com/Playeon/typetube#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "typetube",
+    "youtube",
+    "stream",
+    "audio",
+    "video",
+    "protobuf",
+    "hifi",
+    "download",
+    "media"
+  ],
+  "author": "Opsyra",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}

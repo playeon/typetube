@@ -1,0 +1,7 @@
+*.mjs
+benchmark*
+test*
+final-*
+final-test-output/
+src/
+tsconfig.json
